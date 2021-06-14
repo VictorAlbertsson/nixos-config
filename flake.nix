@@ -9,8 +9,7 @@
   outputs = inputs:
   {
     nixosConfigurations = {
-
-      mysystem = inputs.nixpkgs.lib.nixosSystem {
+      nixos-desktop = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./configuration.nix
