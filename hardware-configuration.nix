@@ -16,5 +16,8 @@
 
     ];
     boot.loader.systemd-boot.enable = true; # (for UEFI systems only)
+    swapDevices = [
+        { device = "/dev/disk/by-label/swap"; }
+    ];
     fileSystems."/".device = "/dev/disk/by-label/nixos";
 }

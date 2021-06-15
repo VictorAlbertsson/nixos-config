@@ -10,6 +10,11 @@
     ./hardware-configuration.nix
   ];
 
+  nix.package = pkgs.nixFlakes;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+
   time.timeZone = "Europe/Stockholm";
   sound.enable = true;
   hardware.pulseaudio.enable = true;
