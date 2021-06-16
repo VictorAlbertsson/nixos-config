@@ -10,38 +10,37 @@
       inputs.nixpkgs.follows = "stable";
     };
     nur.url = "github:nix-community/NUR";
-    emacs.url = "github:nix-community/emacs-overlay";
   };
 
   outputs = inputs:
-  let
-    system = "x86_64-linux";
+  let # TODO Make flakeSystem take a list of users
+    flakeSystem = system: host: user: inputs.stable.lib.nixosSystem {
+      inherit system;
+      modules = [
+        inputs.home-manager.nixosModules.home-manager
+        inputs.unstable.nixosModules.notDetected # Replaces hardware-configuration.nix
+        {
+          nixpkgs.overlays = [
+            inputs.nur.overlay
+          ];
+        }
+        (./hosts + "/${host}.nix")
+        (./users + "/${user}.nix")
+      ];
+      specialArgs = {
+        inherit inputs;
+        inherit system;
+        inherit host;
+        inherit user;
+      };
+    };
   in
   {
     # Alias(es) for easy builds
     nixos-desktop = inputs.self.nixosConfigurations.nixos-desktop.config.system.build.toplevel;
     # Actual system configuration
     nixosConfigurations = {
-      nixos-desktop = inputs.stable.lib.nixosSystem {
-        inherit system;
-        modules = [
-          inputs.home-manager.nixosModules.home-manager
-          inputs.unstable.nixosModules.notDetected ## Replaces hardware-configuration.nix
-          {
-            nixpkgs.overlays = [
-              inputs.nur.overlay
-              inputs.emacs.overlay
-              (next: prev: {
-                unstable = (import inputs.unstable { inherit system; });
-              })
-            ];
-          }
-          ./nixos-desktop/host.nix
-          ./nixos-desktop/users.nix
-        ];
-        specialArgs = { inherit inputs; inherit system; };
-      };
+      nixos-desktop = flakeSystem "x86_64-linux" "nixos-desktop" "victor";
     };
   };
 }
-
