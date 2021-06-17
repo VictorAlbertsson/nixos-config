@@ -3,7 +3,7 @@
 nix-shell -p nixFlakes
 ```
 ```bash
-nix build '.#nixosConfigurations.nixos-desktop.config.system.build.toplevel' \
+nix build '.#nixos-desktop' \
     --experimental-features "nix-command flakes"
 ```
 ```bash
