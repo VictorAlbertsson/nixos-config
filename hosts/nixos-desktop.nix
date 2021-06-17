@@ -27,6 +27,8 @@ in {
 
   hardware = {
     #bluetooth.enable = true;
+    keyboard.zsa.enable = true;
+    steam-hardware.enable = true;
     pulseaudio = {
       enable = true;
       support32Bit = true;
@@ -36,7 +38,6 @@ in {
       driSupport32Bit = true;
       extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
     };
-    steam-hardware.enable = true;
   };
 
   networking = {
@@ -50,16 +51,16 @@ in {
     printing.enable = true;
     sshd.enable = true;
     #blueman.enable = true;
+    udev = {
+      packages = [
+        pkgs.zsa-udev-rules
+      ];
+    };
     xserver = {
       enable = true;
       displayManager.sddm.enable = true;
       desktopManager.plasma5.enable = true;
     };
-    #xserver.displayManager.session = [
-    #  { manage = "desktop"; name = "xsession"; start = "exec $HOME/.xsession"; }
-    #];
-    #xserver.displayManager.defaultSession = "xsession";
-    #libinput.enable = true; ## For touch(pad) support
     picom = {
       enable = true;
       backend = "glx";
@@ -78,6 +79,7 @@ in {
       "wheel"
       "input"
       "audio"
+      "plugdev"
       "networkmanager"
     ];
   };

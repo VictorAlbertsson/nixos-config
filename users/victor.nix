@@ -11,16 +11,16 @@
       vim
       tree
       firefox
+      wally-cli
       ((emacsPackagesFor emacs).emacsWithPackages (epkgs: with epkgs.melpaPackages; [
         dracula-theme
-	hydra
-	multiple-cursors
-	which-key
+	      hydra
+	      multiple-cursors
+	      which-key
+	      nix-mode
+	      haskell-mode
       ]))
     ];
-    #xsession = {
-    #  enable = true;
-    #};
     systemd.user.startServices = true;
     services = {
       gpg-agent = {
@@ -29,7 +29,6 @@
       };
     };
     programs = {
-      #mtr.enable = true; ## Probably also a service
       git = {
         enable = true;
         userName = "Victor Albertsson";
